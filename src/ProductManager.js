@@ -4,7 +4,7 @@ export class ProductManager {
   constructor(path) {
     this.path = path;
     this.products = [];
-    const productsString = fs.readFileSync("products.json", "utf-8");
+    const productsString = fs.readFileSync("src/products.json", "utf-8");
     const products = JSON.parse(productsString);
     this.products = products;
   }
@@ -58,11 +58,11 @@ export class ProductManager {
 
     this.products.push(addedProduct);
     const productsString = JSON.stringify(this.products);
-    fs.writeFileSync("products.json", productsString);
+    fs.writeFileSync("src/products.json", productsString);
   }
 
   getProductsById(id) {
-    const productsString = fs.readFileSync("products.json", "utf-8");
+    const productsString = fs.readFileSync("src/products.json", "utf-8");
     const products = JSON.parse(productsString);
     this.products = products;
     const product = products.find((prod) => prod.id === id);
@@ -86,7 +86,7 @@ export class ProductManager {
     this.products[productToUpdate] = updatedProduct;
     // Se guarda nuevamente el array this.products en el .json:
     const updatedProductsString = JSON.stringify(this.products);
-    fs.writeFileSync("products.json", updatedProductsString);
+    fs.writeFileSync("src/products.json", updatedProductsString);
   }
 
   deleteProduct(id) {
@@ -100,8 +100,8 @@ export class ProductManager {
     this.products.splice(productToDelete, 1);
     // Se guarda nuevamente el array this.products en el .json:
     const productsString = JSON.stringify(this.products);
-    fs.writeFileSync("products.json", productsString);
+    fs.writeFileSync("src/products.json", productsString);
   }
 }
 
-const productManager = new ProductManager("products.json");
+const productManager = new ProductManager("src/products.json");
