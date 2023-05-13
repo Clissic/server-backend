@@ -47,7 +47,7 @@ export class ProductManager {
     actualId++;
 
     const addedProduct = {
-      id: actualId,
+      id: actualId.toString(),
       title,
       description,
       price,
