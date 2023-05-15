@@ -1,5 +1,6 @@
 import express from "express";
 import { productsRouter } from "./routes/products.routes.js";
+import { cartsRouter } from "./routes/carts.routes.js";
 
 const app = express()
 const PORT = 8080
@@ -10,6 +11,7 @@ app.use(express.static("public"))
 
 // MIS ENDPOINTS:
 app.use("/products", productsRouter);
+app.use("/carts", cartsRouter)
 
 app.get("*", (req, res) => {
     return res

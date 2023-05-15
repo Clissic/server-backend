@@ -4,7 +4,7 @@ import { uploader } from "../utils/utils.js";
 export const productsRouter = express.Router();
 
 const productManager = new ProductManager('src/utils/products.json')
-const products = productManager.getAllProducts()
+export const products = productManager.getAllProducts()
 
 productsRouter.get("/", (req, res) => {
     let {limit} = req.query;
@@ -38,9 +38,10 @@ productsRouter.post("/", uploader.single("file"), (req, res) => {
             .status(400)
             .json({status: "error", msj: "To upload a file is mandatory", data: {}})
     }
-    const {title, description, price, code, stock} = req.body
-    let thumbnail = req.file.filename
-    const productToAdd = productManager.createProduct(title, description, price, thumbnail, code, stock)
+    const {title, description, price, code, stock, category} = req.body
+    let thumbnail = []
+    thumbnail.push(req.file.filename)
+    const productToAdd = productManager.createProduct(title, description, price, thumbnail, code, stock, category)
     return res
         .status(201)
         .json({status: "succes", msj: "Product created", data: productToAdd})

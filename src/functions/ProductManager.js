@@ -13,7 +13,7 @@ export class ProductManager {
     return this.products;
   }
 
-  createProduct(title, description, price, thumbnail, code, stock) {
+  createProduct(title, description, price, thumbnail, code, stock, category) {
     if (!title) {
       return console.error("A title is required");
     }
@@ -23,8 +23,8 @@ export class ProductManager {
     if (!price) {
       return console.error("A price is required");
     }
-    if (!thumbnail) {
-      return console.error("A thumbnail is required");
+    if (!category) {
+      return console.error("A category is required");
     }
     if (!code) {
       return console.error("A code is required");
@@ -54,6 +54,8 @@ export class ProductManager {
       thumbnail,
       code,
       stock,
+      status: true,
+      category
     };
 
     this.products.push(addedProduct);
