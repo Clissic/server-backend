@@ -4,7 +4,7 @@ export class ProductManager {
   constructor(path) {
     this.path = path;
     this.products = [];
-    const productsString = fs.readFileSync("src/products.json", "utf-8");
+    const productsString = fs.readFileSync("src/utils/products.json", "utf-8");
     const products = JSON.parse(productsString);
     this.products = products;
   }
@@ -40,7 +40,7 @@ export class ProductManager {
 
     let actualId = 0;
     this.products.forEach((prod) => {
-      if (prod.id > actualId) {
+      if (parseInt(prod.id) > actualId) {
         actualId = prod.id;
       }
     });
@@ -58,11 +58,12 @@ export class ProductManager {
 
     this.products.push(addedProduct);
     const productsString = JSON.stringify(this.products);
-    fs.writeFileSync("src/products.json", productsString);
+    fs.writeFileSync("src/utils/products.json", productsString);
+    return addedProduct
   }
 
   getProductsById(id) {
-    const productsString = fs.readFileSync("src/products.json", "utf-8");
+    const productsString = fs.readFileSync("src/utils/products.json", "utf-8");
     const products = JSON.parse(productsString);
     this.products = products;
     const product = products.find((prod) => prod.id === id);
@@ -86,7 +87,7 @@ export class ProductManager {
     this.products[productToUpdate] = updatedProduct;
     // Se guarda nuevamente el array this.products en el .json:
     const updatedProductsString = JSON.stringify(this.products);
-    fs.writeFileSync("src/products.json", updatedProductsString);
+    fs.writeFileSync("src/utils/products.json", updatedProductsString);
   }
 
   deleteProduct(id) {
@@ -100,8 +101,8 @@ export class ProductManager {
     this.products.splice(productToDelete, 1);
     // Se guarda nuevamente el array this.products en el .json:
     const productsString = JSON.stringify(this.products);
-    fs.writeFileSync("src/products.json", productsString);
+    fs.writeFileSync("src/utils/products.json", productsString);
   }
 }
 
-const productManager = new ProductManager("src/products.json");
+const productManager = new ProductManager("src/utils/products.json");
