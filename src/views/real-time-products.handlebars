@@ -22,7 +22,7 @@
     <input type="file" id="thumbnail" name="thumbnail" accept=".jpg" required />
   </div>
   <div class="form-group">
-    <label for="title">Title:</label>
+    <label for="title">Name:</label>
     <input type="text" id="title" name="title" required />
   </div>
   <div class="form-group">
@@ -41,7 +41,11 @@
     <label for="category">Category:</label>
     <input type="text" id="category" name="category" required />
   </div>
-  <input type="submit" value="Submit" />
+    <div class="form-group">
+    <label for="stock">Stock:</label>
+    <input type="number" id="stock" name="stock" required />
+  </div>
+  <input type="submit" value="Submit" id="addProductSubmitBtn"/>
 </form>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/real-time-products.js"></script>

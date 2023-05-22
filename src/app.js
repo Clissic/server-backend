@@ -5,10 +5,9 @@ import { Server } from "socket.io";
 import { __dirname } from "./dirname.js";
 import { cartsRouter } from "./routes/carts.routes.js";
 import { plantillaProducts } from "./routes/plantilla-products.routes.js";
-import { productsRouter } from "./routes/products.routes.js";
+import { productManager, productsRouter } from "./routes/products.routes.js";
 import { realTimeProducts } from "./routes/real-time-products.routes.js";
 import { testChatRouter } from "./routes/test-chat.routes.js";
-import { productManager } from "./routes/products.routes.js";
 
 const app = express()
 const PORT = 8080
@@ -40,10 +39,19 @@ socketServer.on("connection", (socket) => {
         socketServer.emit("msj", data)
     })
     
+    // ELIMINAR PRODUCTO
     socket.on("productIdToBeRemoved", (id) => {
         let prodDeleted = {}
         socketServer.emit("productDeleted", prodDeleted = () => {
             productManager.deleteProduct(id)
+        })
+    })
+
+    // AGREGAR PRODUCTO
+    socket.on("addProduct", (newProduct) => {
+        let newProducts = []
+        socketServer.emit("productAdded", newProducts = () => {
+            productManager.createProduct(newProduct.title, newProduct.description, newProduct.price, newProduct.thumbnail, newProduct.code, newProduct.stock, newProduct.category)
         })
     })
 })
