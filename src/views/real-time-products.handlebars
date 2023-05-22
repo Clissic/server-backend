@@ -1,0 +1,47 @@
+<h2 class="firstTitle">{{title}}</h2>
+<div class="realTimeProds">
+  {{#each products}}
+    <div class="realTimeProd">
+      <p class="realTimeProdId">Id: {{this.id}}</p>
+      <p class="realTimeProdThumbnail">Thumbnail: {{this.thumbnail}}</p>
+      <p class="realTimeProdTitle">Name: {{this.title}}</p>
+      <p class="realTimeProdPrice">Price: {{this.price}}</p>
+      <p class="realTimeProdDesc">Description: {{this.description}}</p>
+      <p class="realTimeProdCode">Code: {{this.code}}</p>
+      <p class="realTimeProdCategory">Category: {{this.category}}</p>
+      <p class="realTimeProdStock">Stock: {{this.stock}}</p>
+      <p class="realTimeProdStatus">Status: {{this.status}}</p>
+      <button id="realTimeDeleteButton" data-id="{{this.id}}" class="deleteButton">Delete</button>
+    </div>
+  {{/each}}
+</div>
+<h2 class="secondTitle">ADD PRODUCT:</h2>
+<form>
+  <div class="form-group">
+    <label for="thumbnail">Thumbnail:</label>
+    <input type="file" id="thumbnail" name="thumbnail" accept=".jpg" required />
+  </div>
+  <div class="form-group">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required />
+  </div>
+  <div class="form-group">
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" required />
+  </div>
+  <div class="form-group">
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="code">Code:</label>
+    <input type="text" id="code" name="code" required />
+  </div>
+  <div class="form-group">
+    <label for="category">Category:</label>
+    <input type="text" id="category" name="category" required />
+  </div>
+  <input type="submit" value="Submit" />
+</form>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/real-time-products.js"></script>

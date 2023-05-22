@@ -3,7 +3,7 @@ import { ProductManager } from '../functions/ProductManager.js'
 import { uploader } from "../utils/utils.js";
 export const productsRouter = express.Router();
 
-const productManager = new ProductManager('src/utils/products.json')
+export const productManager = new ProductManager('src/utils/products.json')
 export const products = productManager.getAllProducts()
 
 productsRouter.get("/", (req, res) => {

@@ -50,10 +50,10 @@ export class ProductManager {
       id: actualId.toString(),
       title,
       description,
-      price,
+      price: parseInt(price),
       thumbnail,
       code,
-      stock,
+      stock: parseInt(stock),
       status: true,
       category
     };

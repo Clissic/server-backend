@@ -1,3 +1,188 @@
-h2 {
-    color: blue;
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.firstTitle {
+  color: rgb(50, 50, 50);
+  text-align: center;
+  margin: 7vh 0 10vh 0;
+  font-size: 8vh;
+}
+
+.secondTitle {
+  color: rgb(50, 50, 50);
+  text-align: center;
+  margin: 7vh 0 10vh 0;
+  font-size: 5vh;
+}
+
+.prods {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 2vw;
+  row-gap: 2vw;
+  width: 70vw;
+  margin: 0 auto 5vw auto;
+  justify-content: center;
+}
+
+.prod {
+  position: relative;
+  width: 25%;
+  height: 100%;
+  padding: 1.5vw;
+  text-align: center;
+  border-radius: 5%;
+}
+
+.prodImg {
+  width: 80%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.prod:hover {
+  box-shadow: rgb(171, 171, 171) 0px 0px 10px;
+  transition: 1s;
+}
+
+.prodId {
+  display: none;
+}
+
+.prodTitle {
+  font-size: xx-large;
+  font-weight: 900;
+}
+
+.prodPrice {
+  color: green;
+  font-weight: 900;
+  font-size: x-large;
+}
+
+.prodDesc {
+  margin-top: 5%;
+}
+
+/* REAL TIME PRODUCTS */
+
+.realTimeProdsTitle {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.realTimeProds {
+  display: flex;
+  column-gap: 1vw;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.realTimeProd {
+  background-color: rgb(250, 250, 250);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 20%;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.realTimeProdId,
+.realTimeProdThumbnail,
+.realTimeProdTitle,
+.realTimeProdPrice,
+.realTimeProdDesc,
+.realTimeProdCode,
+.realTimeProdCategory,
+.realTimeProdStock,
+.realTimeProdStatus {
+  margin: 0;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.realTimeProdId {
+  font-weight: bold;
+}
+
+.deleteButton {
+  padding: 2% 0 2% 0;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 30%;
+  margin: 0 35% 0 35%;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background-color: rgb(200, 0, 0);
+}
+
+/* FORMULARIO */
+
+form {
+  max-width: 400px;
+  margin: 0 auto 7vh auto;
+  background-color: rgb(250, 250, 250);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #4caf50;
+}
+
+input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+
+input[type="submit"] {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
 }
