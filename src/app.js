@@ -4,7 +4,7 @@ import path from "path";
 import { Server } from "socket.io";
 import { __dirname } from "./dirname.js";
 import { cartsRouter } from "./routes/carts.routes.js";
-import { plantillaProducts } from "./routes/plantilla-products.routes.js";
+import { home } from "./routes/home.routes.js";
 import { productManager, productsRouter } from "./routes/products.routes.js";
 import { realTimeProducts } from "./routes/real-time-products.routes.js";
 import { testChatRouter } from "./routes/test-chat.routes.js";
@@ -57,7 +57,7 @@ socketServer.on("connection", (socket) => {
 })
 
 //QUIERO DEVOLVER HTML DIRECTO PAGINA COMPLETA ARMADA EN EL BACK
-app.use("/plantilla-products", plantillaProducts);
+app.use("/home", home);
 app.use("/test-chat", testChatRouter);
 app.use("/realtimeproducts", realTimeProducts)
 
