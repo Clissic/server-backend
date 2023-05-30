@@ -1,16 +1,18 @@
 <h2 class="firstTitle">{{title}}</h2>
-<div class="realTimeProds">
+<div class="realTimeProds" id="realTimeProds">
   {{#each products}}
     <div class="realTimeProd">
-      <p class="realTimeProdId">Id: {{this.id}}</p>
-      <p class="realTimeProdThumbnail">Thumbnail: {{this.thumbnail}}</p>
-      <p class="realTimeProdTitle">Name: {{this.title}}</p>
-      <p class="realTimeProdPrice">Price: {{this.price}}</p>
-      <p class="realTimeProdDesc">Description: {{this.description}}</p>
-      <p class="realTimeProdCode">Code: {{this.code}}</p>
-      <p class="realTimeProdCategory">Category: {{this.category}}</p>
-      <p class="realTimeProdStock">Stock: {{this.stock}}</p>
-      <p class="realTimeProdStatus">Status: {{this.status}}</p>
+      <div class="realTimeProdParams">
+        <p class="realTimeProdId">Id: {{this.id}}</p>
+        <p class="realTimeProdThumbnail">Thumbnail: <a target="_blank" href="{{this.thumbnail}}">Product img</a></p>
+        <p class="realTimeProdTitle">Name: {{this.title}}</p>
+        <p class="realTimeProdPrice">Price: {{this.price}}</p>
+        <p class="realTimeProdDesc">Description: {{this.description}}</p>
+        <p class="realTimeProdCode">Code: {{this.code}}</p>
+        <p class="realTimeProdCategory">Category: {{this.category}}</p>
+        <p class="realTimeProdStock">Stock: {{this.stock}}</p>
+        <p class="realTimeProdStatus">Status: {{this.status}}</p>
+      </div>
       <button id="realTimeDeleteButton" data-id="{{this.id}}" class="deleteButton">Delete</button>
     </div>
   {{/each}}
@@ -18,8 +20,8 @@
 <h2 class="secondTitle">ADD PRODUCT:</h2>
 <form>
   <div class="form-group">
-    <label for="thumbnail">Thumbnail:</label>
-    <input type="file" id="thumbnail" name="thumbnail" accept=".jpg" required />
+    <label for="thumbnail">Image URL:</label>
+    <input type="text" id="thumbnail" name="thumbnail" required />
   </div>
   <div class="form-group">
     <label for="title">Name:</label>

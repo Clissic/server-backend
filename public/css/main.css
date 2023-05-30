@@ -92,6 +92,10 @@
   margin-bottom: 20px;
 }
 
+.realTimeProdParams {
+  overflow-x: auto;
+}
+
 .realTimeProdId,
 .realTimeProdThumbnail,
 .realTimeProdTitle,

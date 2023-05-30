@@ -61,7 +61,7 @@ export class ProductManager {
     this.products.push(addedProduct);
     const productsString = JSON.stringify(this.products);
     fs.writeFileSync("src/utils/products.json", productsString);
-    return addedProduct
+    return productsString
   }
 
   getProductsById(id) {
@@ -90,6 +90,7 @@ export class ProductManager {
     // Se guarda nuevamente el array this.products en el .json:
     const updatedProductsString = JSON.stringify(this.products);
     fs.writeFileSync("src/utils/products.json", updatedProductsString);
+    return updatedProductsString
   }
 
   deleteProduct(id) {
@@ -104,6 +105,7 @@ export class ProductManager {
     // Se guarda nuevamente el array this.products en el .json:
     const productsString = JSON.stringify(this.products);
     fs.writeFileSync("src/utils/products.json", productsString);
+    return productsString
   }
 }
 

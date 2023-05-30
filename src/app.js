@@ -15,7 +15,7 @@ const PORT = 8080
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(express.static("public", { extensions: ['html', 'js'] }))
+app.use(express.static("public"))
 
 // CONFIG DEL MOTOR DE PLANTILLAS:
 app.engine("handlebars", handlebars.engine());
@@ -33,7 +33,7 @@ const httpServer = app.listen(PORT, () => {
 const socketServer = new Server(httpServer);
 
 socketServer.on("connection", (socket) => {
-    console.log("Quedo conectado el socket " + socket.id)
+    console.log("Connected to socket " + socket.id)
 
     socket.on("msj", (data) => {
         socketServer.emit("msj", data)
@@ -42,17 +42,23 @@ socketServer.on("connection", (socket) => {
     // ELIMINAR PRODUCTO
     socket.on("productIdToBeRemoved", (id) => {
         let prodDeleted = {}
-        socketServer.emit("productDeleted", prodDeleted = () => {
+        socketServer.emit("productDeleted", prodDeleted =
             productManager.deleteProduct(id)
-        })
+        )
     })
 
     // AGREGAR PRODUCTO
     socket.on("addProduct", (newProduct) => {
-        let newProducts = []
-        socketServer.emit("productAdded", newProducts = () => {
-            productManager.createProduct(newProduct.title, newProduct.description, newProduct.price, newProduct.thumbnail, newProduct.code, newProduct.stock, newProduct.category)
-        })
+        let newProducts = productManager.createProduct(
+            newProduct.title, 
+            newProduct.description, 
+            newProduct.price, 
+            newProduct.thumbnail, 
+            newProduct.code, 
+            newProduct.stock, 
+            newProduct.category
+        )
+        socketServer.emit("productAdded", newProducts )
     })
 })
 
