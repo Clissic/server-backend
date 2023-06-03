@@ -11,6 +11,7 @@ async function main() {
     inputValue: "",
     showCancelButton: false,
     allowOutsideClick: false,
+    allowEscapeKey: false,
     inputValidator: (value) => {
       if (!value) {
         return "You need to write something!";

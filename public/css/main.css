@@ -168,15 +168,6 @@ textarea:focus {
   border-color: #4caf50;
 }
 
-input[type="file"] {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  background-color: transparent;
-}
-
 input[type="submit"] {
   background-color: #4caf50;
   color: #fff;
@@ -199,43 +190,47 @@ input[type="submit"]:hover {
 }
 
 .chatBody {
-  background-color: #ededed;
   width: 80vw;
-  height: 70vh;
+  height: 80vh;
   margin: 3vh auto 3vh auto;
-  border-radius: 30px;
-  padding: 20px;
 }
 
 .chatTitle {
   text-align: center;
+  height: 5vh;
+  margin-top: 2vh;
 }
 
 .divMsgs {
+  padding: 10px 0 10px 0;
+  border-radius: 30px;/* 
+  border: solid 10px #ededed; */
+  background-color: #ededed;
   overflow-y: scroll;
-  height: 70vh;
+  scrollbar-width: thin;
+  height: 75vh;
 }
 
 .inputMsgArea {
-  width: 84vw;
-  margin: auto;
+  display: flex;
+  height: 8vh;
+  margin: 2vh auto 2vh auto;
 }
 
 .inputMsg {
-  display: flex;
-  width: 100%;
-  height: 8vh;
+  width: 100% !important;
+  height: 8vh !important;
   background-color: #ededed;
-  border: none !important;
+  border: 10px solid #ededed !important;
   border-radius: 30px !important;
   padding-left: 20px !important;
 }
 
 .indMsgBox {
-  background-color: #f3f3f3;
+  background-color: #f9f9f9;
   border-radius: 15px;
   padding: 10px;
-  margin-top: 1vh;
+  margin: 1vh 0 0 1vw;
   width: fit-content;
 }
 
