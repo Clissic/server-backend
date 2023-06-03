@@ -7,7 +7,7 @@ async function main() {
   const { value: nombre } = await Swal.fire({
     title: "Enter your name:",
     input: "text",
-    inputLabel: "Your name",
+    inputLabel: "Your name is...",
     inputValue: "",
     showCancelButton: false,
     allowOutsideClick: false,
@@ -34,7 +34,7 @@ chatBox.addEventListener("keyup", ({ key }) => {
 });
 
 socket.on("listado_de_msgs", (msgs) => {
-  // console.log(msgs);
+  console.log(msgs);
   const divMsgs = document.getElementById("div-msgs");
   let formato = "";
   msgs.forEach((msg) => {
@@ -42,11 +42,3 @@ socket.on("listado_de_msgs", (msgs) => {
   });
   divMsgs.innerHTML = formato;
 });
-
-/*   Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'Something went wrong!',
-    footer: '<a href="">Why do I have this issue?</a>',
-    allowOutsideClick: false
-  }) */

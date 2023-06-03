@@ -35,12 +35,14 @@ const httpServer = app.listen(PORT, () => {
 
 const socketServer = new Server(httpServer);
 
+let msgs = [];
 socketServer.on("connection", (socket) => {
     console.log("Connected to socket " + socket.id)
-
-    socket.on("msj", (data) => {
-        socketServer.emit("msj", data)
-    })
+    // TEST CHAT
+    socket.on("msg_front_to_back", (msg) => {
+        msgs.push(msg);
+        socketServer.emit("listado_de_msgs", msgs);
+    });
     
     // ELIMINAR PRODUCTO
     socket.on("productIdToBeRemoved", (id) => {
@@ -63,13 +65,6 @@ socketServer.on("connection", (socket) => {
         )
         socketServer.emit("productAdded", newProducts )
     })
-
-    // TEST CHAT
-    let msgs = [];
-        socket.on("msg_front_to_back", (msg) => {
-        msgs.push(msg);
-        socketServer.emit("listado_de_msgs", msgs);
-  });
 })
 
 //QUIERO DEVOLVER HTML DIRECTO PAGINA COMPLETA ARMADA EN EL BACK
