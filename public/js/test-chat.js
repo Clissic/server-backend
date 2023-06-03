@@ -22,6 +22,10 @@ async function main() {
 }
 
 main();
+function scrollDivToBottom() {
+  const divMsgs = document.getElementById("div-msgs");
+  divMsgs.scrollTop = divMsgs.scrollHeight;
+}
 
 chatBox.addEventListener("keyup", ({ key }) => {
   if (key == "Enter") {
@@ -30,6 +34,7 @@ chatBox.addEventListener("keyup", ({ key }) => {
       user: usuarioIngresado,
     });
     chatBox.value = "";
+    scrollDivToBottom();
   }
 });
 
@@ -38,7 +43,16 @@ socket.on("listado_de_msgs", (msgs) => {
   const divMsgs = document.getElementById("div-msgs");
   let formato = "";
   msgs.forEach((msg) => {
-    formato = formato + "<p>" + msg.user + ": " + msg.msg + "</p>";
+    formato = formato + 
+    `
+    <div class="indMsgBox">
+      <p class="indMsgUser">${msg.user}:</p>
+      <p>${msg.msg}</p>
+    </div>
+    `;
   });
   divMsgs.innerHTML = formato;
+  scrollDivToBottom();
 });
+
+scrollDivToBottom();

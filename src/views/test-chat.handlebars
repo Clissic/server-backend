@@ -1,17 +1,11 @@
-<div>
-  CHAT DE LA MEJOR CAMADA: 51395 (por lejos!)
+<h1 class="chatTitle">CHAT EN TIEMPO REAL</h1>
+<div class="chatBody">
+  <div class="divMsgs" id="div-msgs">
+    {{!-- Aca se inyectan los mensajes --}}
+  </div>
 </div>
-<hr style="border-color: red; border-width: 5px; height: 1px;" />
-
-<p>Listado de msgs:</p>
-<div id="div-msgs" style="border: 1px solid red;">
-  Loading...
-</div>
-<br /><br />
-<hr style="border-color: red; border-width: 5px; height: 1px;" />
-<div>
-  <p>Ingrese su msg:</p>
-  <input id="input-msg" type="text" value="ingrese algo..." />
+<div class="inputMsgArea">
+  <input class="inputMsg" id="input-msg" type="text" placeholder="Mensaje..." />
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
