@@ -8,9 +8,12 @@ import { home } from "./routes/home.routes.js";
 import { productManager, productsRouter } from "./routes/products.routes.js";
 import { realTimeProducts } from "./routes/real-time-products.routes.js";
 import { testChatRouter } from "./routes/test-chat.routes.js";
+import { connectMongo } from "./utils/utils.js";
 
 const app = express()
 const PORT = 8080
+
+connectMongo()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -60,6 +63,13 @@ socketServer.on("connection", (socket) => {
         )
         socketServer.emit("productAdded", newProducts )
     })
+
+    // TEST CHAT
+    let msgs = [];
+        socket.on("msg_front_to_back", (msg) => {
+        msgs.push(msg);
+        socketServer.emit("listado_de_msgs", msgs);
+  });
 })
 
 //QUIERO DEVOLVER HTML DIRECTO PAGINA COMPLETA ARMADA EN EL BACK

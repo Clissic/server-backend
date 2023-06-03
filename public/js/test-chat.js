@@ -1,16 +1,47 @@
 const socket = io();
 
-const getDiv = document.getElementById("divId")
-const getInput = document.getElementById("inputId")
+const chatBox = document.getElementById("input-msg");
+let usuarioIngresado = "";
 
-getInput.addEventListener("input", () => {
-    const msj = getInput.value
-    socket.emit("msj", msj)
-})
+async function main() {
+  const { value: nombre } = await Swal.fire({
+    title: "Enter your name:",
+    input: "text",
+    inputLabel: "Your name",
+    inputValue: "",
+    showCancelButton: false,
+    allowOutsideClick: false,
+    inputValidator: (value) => {
+      if (!value) {
+        return "You need to write something!";
+      }
+    },
+  });
 
-socket.on("msj", (data) => {
-    getDiv.textContent = data
-})
+  usuarioIngresado = nombre;
+}
+
+main();
+
+chatBox.addEventListener("keyup", ({ key }) => {
+  if (key == "Enter") {
+    socket.emit("msg_front_to_back", {
+      msg: chatBox.value,
+      user: usuarioIngresado,
+    });
+    chatBox.value = "";
+  }
+});
+
+socket.on("listado_de_msgs", (msgs) => {
+  // console.log(msgs);
+  const divMsgs = document.getElementById("div-msgs");
+  let formato = "";
+  msgs.forEach((msg) => {
+    formato = formato + "<p>" + msg.user + ": " + msg.msg + "</p>";
+  });
+  divMsgs.innerHTML = formato;
+});
 
 /*   Swal.fire({
     icon: 'error',
