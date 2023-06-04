@@ -1,5 +1,6 @@
 import multer from "multer";
 
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public");
@@ -16,7 +17,7 @@ import { connect } from "mongoose";
 export async function connectMongo() {
   try {
     await connect(
-      "mongodb+srv://joaquinperezcoria:Qu7t3hewzxw.@cluster0.zye6fyd.mongodb.net/?retryWrites=true&w=majority"
+      `mongodb+srv://joaquinperezcoria:${process.env.MONGODB_PASSWORD}@cluster0.zye6fyd.mongodb.net/?retryWrites=true&w=majority`
     );
     console.log("Plug to mongo!");
   } catch (e) {

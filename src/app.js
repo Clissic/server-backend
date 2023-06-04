@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import express from "express";
 import handlebars from "express-handlebars";
 import path from "path";
@@ -13,6 +14,7 @@ import { connectMongo } from "./utils/utils.js";
 const app = express()
 const PORT = 8080
 
+dotenv.config();
 connectMongo()
 
 app.use(express.json())
