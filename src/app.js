@@ -52,8 +52,9 @@ socketServer.on("connection", (socket) => {
   // ELIMINAR PRODUCTO
   socket.on("productIdToBeRemoved", async (id) => {
     try {
-      const deletedProduct = await ProductsModel.findByIdAndDelete(id);
-      socketServer.emit("productDeleted", deletedProduct);
+      const productDeleted = await ProductsModel.findByIdAndDelete(id);
+      const deletedAndUpdatedProducts = await ProductsModel.find();
+      socketServer.emit("productDeleted", deletedAndUpdatedProducts, productDeleted);
     } catch (error) {
       console.error(error);
       socketServer.emit("productDeletionError", error.message);
@@ -64,7 +65,8 @@ socketServer.on("connection", (socket) => {
   socket.on("addProduct", async (newProduct) => {
     try {
       const createdProduct = await ProductsModel.create(newProduct);
-      socket.emit("productAdded", createdProduct);
+      const createdAndUpdatedProducts = await ProductsModel.find();
+      socket.emit("productAdded", createdAndUpdatedProducts, createdProduct);
     } catch (error) {
       console.error(error);
       socket.emit("productCreationError", error.message);
