@@ -12,32 +12,22 @@ for (let i = 0; i < getDeleteBtns.length; i++) {
 });
 }
 
-socket.on("productDeleted", (prodDeleted) => {
-  const productsDeletedParse = JSON.parse(prodDeleted)
-  const realTimeProds = document.getElementById("realTimeProds").innerHTML = productsDeletedParse.reduce((acc, prod) => {
-    return acc + 
-    `
-    <div class="realTimeProd">
-      <div class="realTimeProdParams">
-        <p class="realTimeProdId">Id: ${prod.id}</p>
-        <p class="realTimeProdThumbnail">Thumbnail: <a target="_blank" href="${prod.thumbnail}">Product img</a></p>
-        <p class="realTimeProdTitle">Name: ${prod.title}</p>
-        <p class="realTimeProdPrice">Price: ${prod.price}</p>
-        <p class="realTimeProdDesc">Description: ${prod.description}</p>
-        <p class="realTimeProdCode">Code: ${prod.code}</p>
-        <p class="realTimeProdCategory">Category: ${prod.category}</p>
-        <p class="realTimeProdStock">Stock: ${prod.stock}</p>
-        <p class="realTimeProdStatus">Status: ${prod.status}</p>
-      </div>
-      <button id="realTimeDeleteButton" data-id="${prod.id}" class="deleteButton">Delete</button>
-    </div>
-    `
-  },"")
+// Escuchar evento 'productDeleted' del servidor
+socket.on("productDeleted", (deletedProduct) => {
+  console.log("Product deleted:", deletedProduct);
+  // Aquí puedes realizar las actualizaciones necesarias en el front-end,
+  // como eliminar el producto de la interfaz o actualizar la lista de productos.
+});
+
+// Escuchar evento 'productDeletionError' del servidor
+socket.on("productDeletionError", (errorMessage) => {
+  console.error("Error deleting product:", errorMessage);
+  // Aquí puedes manejar el error y mostrar un mensaje al usuario si es necesario.
 });
 
 // AGREGAR UN PRODUCTO CON WEBSOCKETS
 getAddProductSubmitBtn.addEventListener("click", (event) => {
-  event.preventDefault()
+  event.preventDefault();
 
   let thumbnail = document.getElementById("thumbnail").value;
   let title = document.getElementById("title").value;
@@ -46,31 +36,24 @@ getAddProductSubmitBtn.addEventListener("click", (event) => {
   let code = document.getElementById("code").value;
   let category = document.getElementById("category").value;
   let stock = document.getElementById("stock").value;
-  
-  newProduct = {thumbnail, title, price, description, code, category, stock}
+
+  let newProduct = {
+    thumbnail,
+    title,
+    price,
+    description,
+    code,
+    category,
+    stock,
+  };
 
   socket.emit("addProduct", newProduct);
-})
+});
 
-socket.on("productAdded", (newProducts) => {
-  const newProductsParsed = JSON.parse(newProducts)
-  document.getElementById("realTimeProds").innerHTML = newProductsParsed.reduce((acc, prod) => {
-    return acc + 
-    `
-    <div class="realTimeProd">
-      <div class="realTimeProdParams">
-        <p class="realTimeProdId">Id: ${prod.id}</p>
-        <p class="realTimeProdThumbnail">Thumbnail: <a target="_blank" href="${prod.thumbnail}">Product img</a></p>
-        <p class="realTimeProdTitle">Name: ${prod.title}</p>
-        <p class="realTimeProdPrice">Price: ${prod.price}</p>
-        <p class="realTimeProdDesc">Description: ${prod.description}</p>
-        <p class="realTimeProdCode">Code: ${prod.code}</p>
-        <p class="realTimeProdCategory">Category: ${prod.category}</p>
-        <p class="realTimeProdStock">Stock: ${prod.stock}</p>
-        <p class="realTimeProdStatus">Status: ${prod.status}</p>
-      </div>
-      <button id="realTimeDeleteButton" data-id="${prod.id}" class="deleteButton">Delete</button>
-    </div>
-    `
-  },"")
-})
+socket.on("productAdded", (createdProduct) => {
+  console.log("Product added:", createdProduct);
+});
+
+socket.on("productCreationError", (errorMessage) => {
+  console.error("Error creating product:", errorMessage);
+});

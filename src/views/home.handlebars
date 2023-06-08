@@ -1,12 +1,12 @@
-<h2 class="firstTitle">{{title}}</h2>
+<h2 class="firstTitle">{{mainTitle}}</h2>
 <div class="prods">
   {{#each products}}
     <div class="prod">
-      <img src="{{this.thumbnail}}" alt="{{this.title}}" class="prodImg">
-      <p class="prodId">id: {{this.id}}</p>
-      <p class="prodTitle">{{this.title}}</p>
-      <p class="prodPrice">U$S {{this.price}}</p>
-      <p class="prodDesc">{{this.description}}</p>
+      <img src="{{thumbnail}}" alt="{{title}}" class="prodImg">
+      <p class="prodId">id: {{_id}}</p>
+      <p class="prodTitle">{{title}}</p>
+      <p class="prodPrice">U$S {{price}}</p>
+      <p class="prodDesc">{{description}}</p>
     </div>
   {{/each}}
 </div>

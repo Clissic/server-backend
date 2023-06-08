@@ -1,22 +1,25 @@
-<h2 class="firstTitle">{{title}}</h2>
+<h2 class="firstTitle">{{mainTitle}}</h2>
 <div class="realTimeProds" id="realTimeProds">
   {{#each products}}
-    <div class="realTimeProd">
-      <div class="realTimeProdParams">
-        <p class="realTimeProdId">Id: {{this.id}}</p>
-        <p class="realTimeProdThumbnail">Thumbnail: <a target="_blank" href="{{this.thumbnail}}">Product img</a></p>
-        <p class="realTimeProdTitle">Name: {{this.title}}</p>
-        <p class="realTimeProdPrice">Price: {{this.price}}</p>
-        <p class="realTimeProdDesc">Description: {{this.description}}</p>
-        <p class="realTimeProdCode">Code: {{this.code}}</p>
-        <p class="realTimeProdCategory">Category: {{this.category}}</p>
-        <p class="realTimeProdStock">Stock: {{this.stock}}</p>
-        <p class="realTimeProdStatus">Status: {{this.status}}</p>
+    {{#with this}} <!-- Utiliza el helper "with" para establecer el contexto del objeto actual -->
+      <div class="realTimeProd">
+        <div class="realTimeProdParams">
+          <p class="realTimeProdId">Id: {{_id}}</p>
+          <p class="realTimeProdThumbnail">Thumbnail: <a target="_blank" href="{{thumbnail}}">Product img</a></p>
+          <p class="realTimeProdTitle">Name: {{title}}</p>
+          <p class="realTimeProdPrice">Price: {{price}}</p>
+          <p class="realTimeProdDesc">Description: {{description}}</p>
+          <p class="realTimeProdCode">Code: {{code}}</p>
+          <p class="realTimeProdCategory">Category: {{category}}</p>
+          <p class="realTimeProdStock">Stock: {{stock}}</p>
+          <p class="realTimeProdStatus">Status: {{status}}</p>
+        </div>
+        <button id="realTimeDeleteButton" data-id="{{_id}}" class="deleteButton">Delete</button>
       </div>
-      <button id="realTimeDeleteButton" data-id="{{this.id}}" class="deleteButton">Delete</button>
-    </div>
+    {{/with}}
   {{/each}}
 </div>
+
 <h2 class="secondTitle">ADD PRODUCT:</h2>
 <form>
   <div class="form-group">
