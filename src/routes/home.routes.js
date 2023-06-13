@@ -1,5 +1,5 @@
 import express from "express";
-import { ProductsModel } from "../models/products.model.js";
+import { ProductsModel } from "../DAO/models/products.model.js";
 
 export const home = express.Router();
 
@@ -12,6 +12,6 @@ home.get("/", async (req, res) => {
     console.error("Failed to fetch products:", error);
     return res
       .status(500)
-      .json({ status: "error", message: "Failed to fetch products", data: {} });
+      .json({ status: "error", message: "Failed to fetch products", payload: {} });
   }
 });

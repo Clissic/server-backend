@@ -1,6 +1,6 @@
 import express from "express";
-import { uploader } from "../utils/utils.js";
-import { ProductsModel } from "../models/products.model.js";
+import { ProductsModel } from "../DAO/models/products.model.js";
+import { uploader } from "../utils/multer.js";
 
 export const productsRouter = express.Router();
 
@@ -14,7 +14,7 @@ productsRouter.get("/", async (req, res) => {
     const products = await query.exec();
     return res.status(200).json({status: "success",
     msg: "Listado de productos",
-    data: products});
+    payload: products});
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
@@ -28,7 +28,7 @@ productsRouter.get("/:id", async (req, res) => {
       return res.status(200).json({
         status: "success",
         message: "Product by ID found",
-        data: product,
+        payload: product,
       });
     } else {
       return res
@@ -64,7 +64,7 @@ productsRouter.post("/", uploader.single("file"), async (req, res) => {
       .json({
         status: "success",
         message: "Product created",
-        data: newProduct,
+        payload: newProduct,
       });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
@@ -88,7 +88,7 @@ productsRouter.put("/:id", async (req, res) => {
         .json({
           status: "success",
           message: "Product modified successfully",
-          data: updatedProduct,
+          payload: updatedProduct,
         });
     } else {
       return res
@@ -134,7 +134,7 @@ productsRouter.get("/", (req, res) => {
     } else {
         return res
             .status(200)
-            .json({status: "succes", msj: "All products found", data: products})
+            .json({status: "succes", msj: "All products found", payload: products})
     }
 })
 
@@ -144,11 +144,11 @@ productsRouter.get("/:id", (req, res) => {
     if (productById) {
         return res
             .status(200)
-            .json({status: "succes", msj: "Product by ID found", data: productById})
+            .json({status: "succes", msj: "Product by ID found", payload: productById})
     } else {
         return res
             .status(404)
-            .json({status: "error", msj: "Product does not exist", data: {}})
+            .json({status: "error", msj: "Product does not exist", payload: {}})
     }
 })
 
@@ -156,7 +156,7 @@ productsRouter.post("/", uploader.single("file"), (req, res) => {
     if (!req.file) {
         return res
             .status(400)
-            .json({status: "error", msj: "To upload a file is mandatory", data: {}})
+            .json({status: "error", msj: "To upload a file is mandatory", payload: {}})
     }
     const {title, description, price, code, stock, category} = req.body
     let thumbnail = []
@@ -164,7 +164,7 @@ productsRouter.post("/", uploader.single("file"), (req, res) => {
     const productToAdd = productManager.createProduct(title, description, price, thumbnail, code, stock, category)
     return res
         .status(201)
-        .json({status: "succes", msj: "Product created", data: productToAdd})
+        .json({status: "succes", msj: "Product created", payload: productToAdd})
 })
 
 productsRouter.put("/:id", (req, res) => {
@@ -173,7 +173,7 @@ productsRouter.put("/:id", (req, res) => {
     const modifiedProduct = productManager.updateProduct(id, dataToUpdate)
     return res
         .status(200)
-        .json({status: "succes", msj: "Product modified succesfuly", data: modifiedProduct})
+        .json({status: "succes", msj: "Product modified succesfuly", payload: modifiedProduct})
 })
 
 productsRouter.delete("/:id", (req, res) => {
@@ -183,10 +183,10 @@ productsRouter.delete("/:id", (req, res) => {
         productManager.deleteProduct(id)
         return res
             .status(200)
-            .json({status: "succes", msj: "Product by ID deleted", data: {}})
+            .json({status: "succes", msj: "Product by ID deleted", payload: {}})
     } else {
         return res
             .status(404)
-            .json({status: "error", msj: "Product does not exist", data: {}})
+            .json({status: "error", msj: "Product does not exist", payload: {}})
     }
 }) */

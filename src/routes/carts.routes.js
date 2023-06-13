@@ -1,6 +1,6 @@
 import express from "express";
-import { CartsModel } from "../models/carts.model.js";
-import { ProductsModel } from "../models/products.model.js";
+import { CartsModel } from "../DAO/models/carts.model.js";
+import { ProductsModel } from "../DAO/models/products.model.js";
 
 export const cartsRouter = express.Router();
 
@@ -10,12 +10,12 @@ cartsRouter.post("/", async (req, res) => {
     return res.status(200).json({
       status: "success",
       message: "Cart created successfully",
-      data: cart,
+      payload: cart,
     });
   } catch (error) {
     return res
       .status(500)
-      .json({ status: "error", message: "Failed to create cart", data: {} });
+      .json({ status: "error", message: "Failed to create cart", payload: {} });
   }
 });
 
@@ -31,17 +31,17 @@ cartsRouter.get("/:cid", async (req, res) => {
       return res.status(200).json({
         status: "success",
         message: "Cart found",
-        data: cart.products,
+        payload: cart.products,
       });
     } else {
       return res
         .status(404)
-        .json({ status: "error", message: "Cart does not exist", data: {} });
+        .json({ status: "error", message: "Cart does not exist", payload: {} });
     }
   } catch (error) {
     return res
       .status(500)
-      .json({ status: "error", message: "Failed to get cart", data: {} });
+      .json({ status: "error", message: "Failed to get cart", payload: {} });
   }
 });
 
@@ -53,13 +53,13 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
     if (!productToAdd) {
       return res
         .status(404)
-        .json({ status: "error", message: "Product does not exist", data: {} });
+        .json({ status: "error", message: "Product does not exist", payload: {} });
     }
     const cart = await CartsModel.findById(cid);
     if (!cart) {
       return res
         .status(404)
-        .json({ status: "error", message: "Cart does not exist", data: {} });
+        .json({ status: "error", message: "Cart does not exist", payload: {} });
     }
     const existingProduct = cart.products.find(
       (product) => product.product.toString() === pid
@@ -78,7 +78,7 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
       .json({
         status: "success",
         message: "Product added to cart",
-        data: productToAdd,
+        payload: productToAdd,
       });
   } catch (error) {
     return res
@@ -86,7 +86,7 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
       .json({
         status: "error",
         message: "Failed to add product to cart",
-        data: {},
+        payload: {},
       });
   }
 });
@@ -103,7 +103,7 @@ cartsRouter.post("/", (req, res) => {
   const cart = cartManager.createCart(products);
   return res
     .status(200)
-    .json({ status: "succes", msj: "Cart created succesfuly", data: cart });
+    .json({ status: "succes", msj: "Cart created succesfuly", payload: cart });
 });
 
 cartsRouter.get("/:cid", (req, res) => {
@@ -115,12 +115,12 @@ cartsRouter.get("/:cid", (req, res) => {
       .json({
         status: "succes",
         msj: "Cart by ID found",
-        data: cartByCId.products,
+        payload: cartByCId.products,
       });
   } else {
     return res
       .status(404)
-      .json({ status: "error", msj: "Cart does not exist", data: {} });
+      .json({ status: "error", msj: "Cart does not exist", payload: {} });
   }
 });
 
@@ -135,7 +135,7 @@ cartsRouter.post("/:cid/product/:pid", (req, res) => {
     .json({
       status: "success",
       msj: "Product added to cart",
-      data: product,
+      payload: product,
     });
 });
  */

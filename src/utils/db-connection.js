@@ -1,18 +1,7 @@
-import multer from "multer";
-
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
-export const uploader = multer({ storage });
-
+import dotenv from "dotenv";
 import { connect } from "mongoose";
+
+dotenv.config();
 
 export async function connectMongo() {
   try {
