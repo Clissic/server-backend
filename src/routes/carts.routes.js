@@ -1,12 +1,12 @@
 import express from "express";
-import { CartsModel } from "../DAO/models/carts.model.js";
 import { ProductsModel } from "../DAO/models/products.model.js";
+import { CartsService } from "../services/cart.service.js";
 
 export const cartsRouter = express.Router();
 
 cartsRouter.post("/", async (req, res) => {
   try {
-    const cart = await CartsModel.create({ products: [] });
+    const cart = await CartsService.create();
     return res.status(200).json({
       status: "success",
       message: "Cart created successfully",
@@ -22,10 +22,7 @@ cartsRouter.post("/", async (req, res) => {
 cartsRouter.get("/:cid", async (req, res) => {
   try {
     const cid = req.params.cid;
-    const cart = await CartsModel.findById(cid).populate(
-      "products.product",
-      "id"
-    );
+    const cart = await CartsService.findById(cid);
 
     if (cart) {
       return res.status(200).json({
@@ -55,7 +52,7 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
         .status(404)
         .json({ status: "error", message: "Product does not exist", payload: {} });
     }
-    const cart = await CartsModel.findById(cid);
+    const cart = await CartsService.findById(cid);
     if (!cart) {
       return res
         .status(404)
@@ -65,10 +62,7 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
       (product) => product.product.toString() === pid
     );
     if (existingProduct) {
-      await CartsModel.findOneAndUpdate(
-        { _id: cid, "products.product": pid },
-        { $inc: { "products.$.quantity": 1 } }
-      );
+      await CartsService.findOneAndUpdate(cid, pid);
     } else {
       cart.products.push({ product: pid, quantity: 1 });
       await cart.save();
@@ -90,52 +84,3 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
       });
   }
 });
-
-/* import express from "express";
-import { CartManager } from "../functions/CartManager.js";
-import { products } from "./products.routes.js";
-export const cartsRouter = express.Router();
-
-const cartManager = new CartManager("src/utils/carts.json");
-
-cartsRouter.post("/", (req, res) => {
-  const products = [];
-  const cart = cartManager.createCart(products);
-  return res
-    .status(200)
-    .json({ status: "succes", msj: "Cart created succesfuly", payload: cart });
-});
-
-cartsRouter.get("/:cid", (req, res) => {
-  const cid = req.params.cid;
-  const cartByCId = cartManager.getCartsById(cid);
-  if (cartByCId) {
-    return res
-      .status(200)
-      .json({
-        status: "succes",
-        msj: "Cart by ID found",
-        payload: cartByCId.products,
-      });
-  } else {
-    return res
-      .status(404)
-      .json({ status: "error", msj: "Cart does not exist", payload: {} });
-  }
-});
-
-cartsRouter.post("/:cid/product/:pid", (req, res) => {
-  const cid = req.params.cid;
-  const pid = req.params.pid;
-  const prodToAdd = products.find((prod) => prod.id === pid);
-  const product = { id: prodToAdd.id, quantity: 1 };
-  cartManager.addProductToCart(cid, product);
-  return res
-    .status(201)
-    .json({
-      status: "success",
-      msj: "Product added to cart",
-      payload: product,
-    });
-});
- */

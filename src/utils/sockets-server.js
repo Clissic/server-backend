@@ -5,7 +5,7 @@ import { MsgModel } from "../DAO/models/msgs.model.js";
 export function connectSocketServer(httpServer) {
   const socketServer = new Server(httpServer);
 
-    socketServer.on("connection", (socket) => {
+  socketServer.on("connection", (socket) => {
     console.log("Connected to socket " + socket.id);
   });
   // TEST CHAT
