@@ -1,20 +1,22 @@
 import express from "express";
-import { ProductsModel } from "../DAO/models/products.model.js";
+import { ProductsService } from "../services/products.service.js";
 import { uploader } from "../utils/multer.js";
 
 export const productsRouter = express.Router();
 
 productsRouter.get("/", async (req, res) => {
-  try {
-    let { limit } = req.query;
-    let query = ProductsModel.find();
-    if (limit) {
+  try { // NO FUNCIONA EL LIMIT -- CONSULTAR --
+/*     let { limit } = req.query; */
+    let /* query */ products = await ProductsService.findAll();
+/*     if (limit) {
       query = query.limit(Number(limit));
     }
-    const products = await query.exec();
-    return res.status(200).json({status: "success",
-    msg: "Listado de productos",
-    payload: products});
+    const products = await query.exec(); */
+    return res.status(200).json({
+      status: "success",
+      msg: "Listado de productos",
+      payload: products
+    });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
@@ -23,7 +25,7 @@ productsRouter.get("/", async (req, res) => {
 productsRouter.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await ProductsModel.findById(id);
+    const product = await ProductsService.findById(id);
     if (product) {
       return res.status(200).json({
         status: "success",
@@ -49,16 +51,7 @@ productsRouter.post("/", uploader.single("file"), async (req, res) => {
     }
     const { title, description, price, code, stock, category } = req.body;
     const thumbnail = req.file.filename;
-    const newProduct = new ProductsModel({
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      stock,
-      category,
-    });
-    await newProduct.save();
+    const newProduct = ProductsService.create(title, description, price, thumbnail, code, stock, category);
     return res
       .status(201)
       .json({
@@ -75,13 +68,7 @@ productsRouter.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const dataToUpdate = req.body;
-    const updatedProduct = await ProductsModel.findByIdAndUpdate(
-      id,
-      dataToUpdate,
-      {
-        new: true,
-      }
-    );
+    const updatedProduct = await ProductsService.findByIdAndUpdate(id, dataToUpdate,);
     if (updatedProduct) {
       return res
         .status(200)
@@ -102,8 +89,8 @@ productsRouter.put("/:id", async (req, res) => {
 
 productsRouter.delete("/:id", async (req, res) => {
   try {
-    const { _id } = req.params;
-    const deletedProduct = await ProductsModel.findByIdAndDelete(_id);
+    const { id } = req.params;
+    const deletedProduct = await ProductsService.findByIdAndDelete(id);
     if (deletedProduct) {
       return res
         .status(200)
@@ -117,76 +104,3 @@ productsRouter.delete("/:id", async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
-
-/* import express from "express";
-import { ProductManager } from '../functions/ProductManager.js'
-import { uploader } from "../utils/utils.js";
-export const productsRouter = express.Router();
-
-export const productManager = new ProductManager('src/utils/products.json')
-export const products = productManager.getAllProducts()
-
-productsRouter.get("/", (req, res) => {
-    let {limit} = req.query;
-    if (limit) {
-        const limitedProducts = products.slice(0, limit);
-        return res.status(200).json(limitedProducts);
-    } else {
-        return res
-            .status(200)
-            .json({status: "succes", msj: "All products found", payload: products})
-    }
-})
-
-productsRouter.get("/:id", (req, res) => {
-    const id = req.params.id
-    const productById = productManager.getProductsById(id)
-    if (productById) {
-        return res
-            .status(200)
-            .json({status: "succes", msj: "Product by ID found", payload: productById})
-    } else {
-        return res
-            .status(404)
-            .json({status: "error", msj: "Product does not exist", payload: {}})
-    }
-})
-
-productsRouter.post("/", uploader.single("file"), (req, res) => {
-    if (!req.file) {
-        return res
-            .status(400)
-            .json({status: "error", msj: "To upload a file is mandatory", payload: {}})
-    }
-    const {title, description, price, code, stock, category} = req.body
-    let thumbnail = []
-    thumbnail.push(req.file.filename)
-    const productToAdd = productManager.createProduct(title, description, price, thumbnail, code, stock, category)
-    return res
-        .status(201)
-        .json({status: "succes", msj: "Product created", payload: productToAdd})
-})
-
-productsRouter.put("/:id", (req, res) => {
-    const id = req.params.id
-    const dataToUpdate = req.body
-    const modifiedProduct = productManager.updateProduct(id, dataToUpdate)
-    return res
-        .status(200)
-        .json({status: "succes", msj: "Product modified succesfuly", payload: modifiedProduct})
-})
-
-productsRouter.delete("/:id", (req, res) => {
-    const id = req.params.id
-    const productToDelete = productManager.getProductsById(id)
-    if (productToDelete) {
-        productManager.deleteProduct(id)
-        return res
-            .status(200)
-            .json({status: "succes", msj: "Product by ID deleted", payload: {}})
-    } else {
-        return res
-            .status(404)
-            .json({status: "error", msj: "Product does not exist", payload: {}})
-    }
-}) */

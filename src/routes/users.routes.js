@@ -1,17 +1,11 @@
 import express from "express";
-import { UserModel } from "../DAO/models/users.model.js";
+import { UserService } from "../services/users.service.js";
 
 export const usersRouter = express.Router();
 
 usersRouter.get("/", async (req, res) => {
   try {
-    const users = await UserModel.find(
-      {},{
-        _id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-      });
+    const users = await UserService.getAll();
     return res.status(200).json({
       status: "success",
       msg: "All users found",
@@ -30,7 +24,7 @@ usersRouter.get("/", async (req, res) => {
 usersRouter.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await UserModel.findById(id);
+    const user = await UserService.findById(id);
     if (user) {
       return res.status(200).json({
         status: "success",
@@ -60,7 +54,7 @@ usersRouter.post("/", async (req, res) => {
         payload: {},
       });
     }
-    const userCreated = await UserModel.create({ firstName, lastName, email });
+    const userCreated = await UserService.create({ firstName, lastName, email });
     return res.status(201).json({
       status: "success",
       msg: "user created",
@@ -76,11 +70,11 @@ usersRouter.post("/", async (req, res) => {
   }
 });
 
-usersRouter.put("/:id", async (req, res) => {
+usersRouter.put("/:_id", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { _id } = req.params;
     const { firstName, lastName, email } = req.body;
-    if (!firstName || !lastName || !email || !id) {
+    if (!firstName || !lastName || !email || !_id) {
       console.log(
         "Validation error: please complete firstName, lastName and email."
       );
@@ -90,20 +84,31 @@ usersRouter.put("/:id", async (req, res) => {
         payload: {},
       });
     }
-    const userUptaded = await UserModel.updateOne(
-      { _id: id },
-      { firstName, lastName, email }
-    );
-    if (userUptaded.matchedCount > 0) {
-      return res.status(201).json({
-        status: "success",
-        msg: "User uptaded",
-        payload: {},
+    try {
+      const userUpdated = await UserService.updateOne({
+        _id,
+        firstName,
+        lastName,
+        email,
       });
-    } else {
-      return res.status(404).json({
+      console.log(userUpdated);
+      if (userUpdated.matchedCount > 0) {
+        return res.status(201).json({
+          status: "success",
+          msg: "user updated",
+          payload: {},
+        });
+      } else {
+        return res.status(404).json({
+          status: "error",
+          msg: "user not found",
+          payload: {},
+        });
+      }
+    } catch (e) {
+      return res.status(500).json({
         status: "error",
-        msg: "User not found",
+        msg: "db server error while updating user",
         payload: {},
       });
     }
@@ -111,17 +116,17 @@ usersRouter.put("/:id", async (req, res) => {
     console.log(e);
     return res.status(500).json({
       status: "error",
-      msg: "Something went wrong :(",
+      msg: "something went wrong :(",
       payload: {},
     });
   }
 });
 
-usersRouter.delete("/:id", async (req, res) => {
+usersRouter.delete("/:_id", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { _id } = req.params;
 
-    const result = await UserModel.deleteOne({ _id: id });
+    const result = await UserService.deleteOne({ _id });
 
     if (result?.deletedCount > 0) {
       return res.status(200).json({

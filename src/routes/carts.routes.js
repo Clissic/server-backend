@@ -1,6 +1,6 @@
 import express from "express";
 import { ProductsModel } from "../DAO/models/products.model.js";
-import { CartsService } from "../services/cart.service.js";
+import { CartsService } from "../services/carts.service.js";
 
 export const cartsRouter = express.Router();
 
