@@ -1,0 +1,14 @@
+<div>
+    <h1 class="firstTitle">{{ mainTitle }}</h1>
+    {{#each cart.products}}
+    {{#with this}}
+        <div>
+            <p>"../../public/{{product.thumbnail}}"</p>
+            <img src="../../public/5s.jpg" alt="{{product.title}}">
+        <h3>Product: {{ product.title }}</h3>
+        <p>Quantity: {{ quantity }}</p>
+        </div>
+    {{/with}}
+    {{/each}}
+</div>
+<script src="/socket.io/socket.io.js"></script>

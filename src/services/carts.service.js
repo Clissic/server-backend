@@ -7,10 +7,7 @@ class cartsService {
     }
 
     async findById(cid) {
-        const cart = await CartsModel.findById(cid).populate(
-            "products.product",
-            "id"
-        )
+        const cart = await CartsModel.findById(cid)
         return cart
     }
 

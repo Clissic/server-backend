@@ -1,21 +1,41 @@
 import express from "express";
+import { __dirname } from "../config.js"
 import { ProductsService } from "../services/products.service.js";
+import { ProductsModel } from "../DAO/models/products.model.js";
 import { uploader } from "../utils/multer.js";
 
 export const productsRouter = express.Router();
 
 productsRouter.get("/", async (req, res) => {
-  try { // NO FUNCIONA EL LIMIT -- CONSULTAR --
-/*     let { limit } = req.query; */
-    let /* query */ products = await ProductsService.findAll();
-/*     if (limit) {
-      query = query.limit(Number(limit));
+  try {
+    const {currentPage, prodLimit, sort, query} = req.query
+    const sortOption = sort === "asc" ? {price: 1} : sort === "desc" ? {price: -1} : {}
+    const filter = {};
+    if (query === "tablet" || query === "celphone" || query === "notebook") {
+      filter.category = query;
     }
-    const products = await query.exec(); */
+    if (query === "available") {
+      filter.stock = { $gt: 0 };
+    }
+    const queryResult = await ProductsModel.paginate(filter, {sort: sortOption, limit: prodLimit || 10, page: currentPage || 1})
+    let paginatedProd = queryResult.docs
+    const { totalDocs, limit, totalPages, page, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage } = queryResult
+    paginatedProd = paginatedProd.map((prod) => ({
+        _id: prod._id.toString(),
+        title: prod.title,
+        description: prod.description,
+        price: prod.price,
+        thumbnail: prod.thumbnail,
+        code: prod.code,
+        stock: prod.stock,
+        category: prod.category
+    }))
+    const prevLink = hasPrevPage ? `/api/products?currentPage=${queryResult.prevPage}&prodLimit=${prodLimit ? prodLimit : ""}&sort=${sort ? sort : ""}&query=${query ? query : ""}` : null
+    const nextLink = hasNextPage ? `/api/products?currentPage=${queryResult.nextPage}&prodLimit=${prodLimit ? prodLimit : ""}&sort=${sort ? sort : ""}&query=${query ? query : ""}` : null
     return res.status(200).json({
       status: "success",
       msg: "Listado de productos",
-      payload: products
+      payload: {paginatedProd, totalDocs, limit, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink}
     });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });

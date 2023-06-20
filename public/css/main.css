@@ -7,7 +7,7 @@
 .firstTitle {
   color: rgb(50, 50, 50);
   text-align: center;
-  margin: 7vh 0 10vh 0;
+  margin: 7vh 0 5vh 0;
   font-size: 8vh;
 }
 
@@ -39,13 +39,13 @@
 }
 
 .prodImg {
-  width: 80%;
+  height: 30vh;
   object-fit: cover;
   margin-bottom: 20px;
 }
 
 .prod:hover {
-  box-shadow: rgb(171, 171, 171) 0px 0px 10px;
+  box-shadow: rgba(171, 171, 171, 0.200) 0px 0px 10px;
   transition: 1s;
 }
 
@@ -66,6 +66,57 @@
 
 .prodDesc {
   margin-top: 5%;
+}
+
+.addToCartBtn {
+  background-color: darkblue;
+  display: flex;
+  color: white;
+  padding: 10px 15px 10px 15px;
+  margin: 10px auto 10px auto;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  align-items: center;
+}
+
+.addToCartBtn:hover {
+  background-color: blue;
+  transition: 1s;
+}
+
+.cartIcon {
+  margin-right: 1vw;
+  width: 1.3vw;
+  filter: invert();
+}
+
+.paginationItems {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 30vw;
+  margin: 0 auto 5vh auto;
+}
+
+.paginationLink {
+  text-decoration: none;
+  color: black;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+  margin: 0 1vw 0 1vw;
+}
+
+.paginationLink:hover {
+  box-shadow: rgb(171, 171, 171, 0.200) 0px 0px 10px;
+  transition: 1s;
+}
+
+.paginationActualPage {
+  padding: 5px 10px 5px 10px;
+  background-color: #ededed;
+  border-radius: 10px;
 }
 
 /* REAL TIME PRODUCTS */

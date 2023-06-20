@@ -1,4 +1,5 @@
 import express from "express";
+import { CartsModel } from "../DAO/models/carts.model.js";
 import { ProductsModel } from "../DAO/models/products.model.js";
 import { CartsService } from "../services/carts.service.js";
 
@@ -22,7 +23,9 @@ cartsRouter.post("/", async (req, res) => {
 cartsRouter.get("/:cid", async (req, res) => {
   try {
     const cid = req.params.cid;
-    const cart = await CartsService.findById(cid);
+    const cart = await CartsModel.findById(cid).populate(
+      "products.product",
+  );
 
     if (cart) {
       return res.status(200).json({
@@ -82,5 +85,145 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
         message: "Failed to add product to cart",
         payload: {},
       });
+  }
+});
+
+cartsRouter.delete("/:cid/products/:pid", async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
+    const cart = await CartsService.findById(cid);
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Cart does not exist", payload: {} });
+    }
+    const productToDeleteIndex = cart.products.findIndex(
+      (product) => product.product._id.toString() === pid
+    );
+    if (productToDeleteIndex === -1) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Product does not exist in the cart", payload: {} });
+    }
+    cart.products.splice(productToDeleteIndex, 1);
+    await cart.save();
+    return res.status(200).json({
+      status: "success",
+      message: "Product deleted from cart",
+      payload: cart,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to delete product from cart",
+      payload: {},
+    });
+  }
+});
+
+cartsRouter.put("/:cid", async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const productsToUpdate = req.body.products;
+    const cart = await CartsService.findById(cid);
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Cart does not exist", payload: {} });
+    }
+    cart.products = productsToUpdate.map((product) => {
+      const existingProduct = cart.products.find(
+        (p) => p.product.toString() === product.product
+      );
+      if (existingProduct) {
+        return {
+          product: product.product,
+          quantity: product.quantity || existingProduct.quantity,
+        };
+      } else {
+        return {
+          product: product.product,
+          quantity: product.quantity,
+        };
+      }
+    });
+    await cart.save();
+    return res.status(200).json({
+      status: "success",
+      message: "Products updated in cart",
+      payload: cart,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to update products in cart",
+      payload: {},
+    });
+  }
+});
+
+cartsRouter.put("/:cid/products/:pid", async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
+    const quantity = req.body.quantity;
+
+    const cart = await CartsService.findById(cid);
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Cart does not exist", payload: {} });
+    }
+
+    const productIndex = cart.products.findIndex(
+      (product) => product.product._id.toString() === pid
+    );
+    if (productIndex === -1) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Product does not exist in the cart", payload: {} });
+    }
+
+    cart.products[productIndex].quantity = quantity;
+
+    await cart.save();
+
+    return res.status(200).json({
+      status: "success",
+      message: "Product quantity updated in cart",
+      payload: cart,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to update product quantity in cart",
+      payload: {},
+    });
+  }
+});
+
+cartsRouter.delete("/:cid", async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const cart = await CartsService.findById(cid);
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Cart does not exist", payload: {} });
+    }
+    cart.products = [];
+    await cart.save();
+    return res.status(200).json({
+      status: "success",
+      message: "All products deleted from cart",
+      payload: cart,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to delete products from cart",
+      payload: {},
+    });
   }
 });

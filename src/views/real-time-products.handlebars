@@ -1,7 +1,7 @@
 <h2 class="firstTitle">{{mainTitle}}</h2>
 <div class="realTimeProds" id="realTimeProds">
   {{#each products}}
-    {{#with this}} <!-- Utiliza el helper "with" para establecer el contexto del objeto actual -->
+    {{#with this}}
       <div class="realTimeProd">
         <div class="realTimeProdParams">
           <p class="realTimeProdId">Id: {{_id}}</p>

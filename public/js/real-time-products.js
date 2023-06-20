@@ -61,6 +61,7 @@ getAddProductSubmitBtn.addEventListener("click", (event) => {
     code,
     category,
     stock,
+    status: true
   };
 
   socket.emit("addProduct", newProduct);
