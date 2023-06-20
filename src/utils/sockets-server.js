@@ -1,6 +1,8 @@
 import { Server } from "socket.io";
 import { ProductsModel } from "../DAO/models/products.model.js";
 import { MsgModel } from "../DAO/models/msgs.model.js";
+import { CartsModel } from "../DAO/models/carts.model.js";
+import { CartsService } from "../services/carts.service.js";
 
 export function connectSocketServer(httpServer) {
   const socketServer = new Server(httpServer);
@@ -49,6 +51,51 @@ export function connectSocketServer(httpServer) {
       } catch (error) {
         console.error(error);
         socket.emit("productCreationError", error.message);
+      }
+    });
+  });
+
+  // AGREGAR PRODUCTO AL CARRITO
+  socketServer.on("connection", (socket) => {
+    socket.on("productIdToBeAdded", async (id) => {
+      try {
+        const findCart = await CartsModel.findById("648158c52b60b7e166aa32ee");
+        const cid = findCart._id;
+        const pid = id;
+        const productToAdd = await ProductsModel.findById(pid);
+        if (!productToAdd) {
+          return res
+            .status(404)
+            .json({
+              status: "error",
+              message: "Product does not exist",
+              payload: {},
+            });
+        }
+        const cart = await CartsService.findById(cid);
+        if (!cart) {
+          return res
+            .status(404)
+            .json({
+              status: "error",
+              message: "Cart does not exist",
+              payload: {},
+            });
+        }
+        const existingProduct = cart.products.find(
+          (product) => product.product.toString() === pid
+        );
+        if (existingProduct) {
+          await CartsService.findOneAndUpdate(cid, pid);
+        } else {
+          cart.products.push({ product: pid, quantity: 1 });
+          await cart.save();
+        }
+        socket.emit("productAddedToCart", cart);
+        console.log(cart);
+      } catch (error) {
+        console.error(error);
+        socket.emit("productAddToCartError", error.message);
       }
     });
   });
