@@ -1,6 +1,8 @@
+import cookieParser from "cookie-parser";
 import express from "express";
 import handlebars from "express-handlebars";
 import path from "path";
+import session from "express-session";
 import { __dirname } from "./config.js";
 import { cartRouter } from "./routes/cart.routes.js";
 import { cartsRouter } from "./routes/carts.routes.js";
@@ -16,6 +18,8 @@ const app = express();
 const PORT = 8080;
 connectMongo();
 
+/* app.use(cookieParser("A98dB973kWpfAF099Kmo")) */
+app.use(session({secret: "A98dB973kWpfAF099Kmo", resave: true, saveUninitialized: true}))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -42,6 +46,51 @@ app.use("/products", products);
 app.use("/chat", chatRouter);
 app.use("/realtimeproducts", realTimeProducts);
 app.use("/cart", cartRouter);
+
+app.get("/session", (req, res) => {
+  if (req.session.cont) {
+    req.session.cont++
+    res.send("Nos visitaste " + req.session.cont)
+  } else {
+    req.session.cont = 1
+    res.send("Nos visitaste " + 1)
+  }
+})
+
+app.get("/login", (req, res) => {
+  const {userName, password} = req.query
+  if (userName !== "pepe" || password !== "pepepass") {
+    return res.send("Login failed")
+  }
+  req.session.user = userName
+  req.session.admin = false
+  res.send("Login success!")
+})
+
+app.get("/logout", (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.json({ status: "error", msg: "Logout error", body: err})
+    }
+    res.send("Logout ok!")
+  })
+})
+
+app.get("/abierta", (req, res) =>{
+  res.send("Informacion abierta a publico")
+})
+
+function checkLogin (req, res, next) {
+  if (req.session.user) {
+    return next()
+  } else {
+    return res.status(401).send("Error de autorizacion!")
+  }
+}
+
+app.get("/perfil", checkLogin, (req, res) =>{
+  res.send("Todo el perfil")
+})
 
 app.get("*", (req, res) => {
   return res
