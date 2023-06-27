@@ -13,13 +13,28 @@ import { realTimeProducts } from "./routes/real-time-products.routes.js";
 import { usersRouter } from "./routes/users.routes.js";
 import { connectMongo } from "./utils/db-connection.js";
 import { connectSocketServer } from "./utils/sockets-server.js";
+import pkg from 'session-file-store';
+import MongoStore from "connect-mongo";
+import { loginRouter } from "./routes/login.html.routes.js";
+import { signupRouter } from "./routes/signup.html.routes.js";
+import { sessionsRouter } from "./routes/session.routes.js";
 
 const app = express();
 const PORT = 8080;
+const fileStore = pkg(session);
 connectMongo();
 
 /* app.use(cookieParser("A98dB973kWpfAF099Kmo")) */
-app.use(session({secret: "A98dB973kWpfAF099Kmo", resave: true, saveUninitialized: true}))
+app.use(session({
+  secret: "A98dB973kWpfAF099Kmo", 
+  resave: true, 
+  saveUninitialized: true, 
+  store: MongoStore.create({
+    mongoUrl: `mongodb+srv://joaquinperezcoria:${process.env.MONGODB_PASSWORD}@cluster0.zye6fyd.mongodb.net/?retryWrites=true&w=majority`,
+    mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true},
+    ttl: 15
+  })
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -41,13 +56,19 @@ connectSocketServer(httpServer);
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/carts", cartsRouter);
+app.use("/api/sessions", sessionsRouter);
 
+app.use("/", loginRouter)
+app.use("/signup", signupRouter)
 app.use("/products", products);
 app.use("/chat", chatRouter);
 app.use("/realtimeproducts", realTimeProducts);
 app.use("/cart", cartRouter);
 
+// ORDENAR LOGICA DEL SESSION:
+
 app.get("/session", (req, res) => {
+  console.log(req.session)
   if (req.session.cont) {
     req.session.cont++
     res.send("Nos visitaste " + req.session.cont)
@@ -76,24 +97,24 @@ app.get("/logout", (req, res) => {
   })
 })
 
-app.get("/abierta", (req, res) =>{
-  res.send("Informacion abierta a publico")
+app.get("/open", (req, res) =>{
+  res.send("Public information")
 })
 
 function checkLogin (req, res, next) {
   if (req.session.user) {
     return next()
   } else {
-    return res.status(401).send("Error de autorizacion!")
+    return res.status(401).send("Authorization error!")
   }
 }
 
-app.get("/perfil", checkLogin, (req, res) =>{
-  res.send("Todo el perfil")
+app.get("/profile", checkLogin, (req, res) =>{
+  res.send("Complete profile")
 })
 
 app.get("*", (req, res) => {
   return res
     .status(404)
-    .json({ status: "error", msj: "Route does not exist", payload: {} });
+    .render("404")
 });

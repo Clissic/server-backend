@@ -1,10 +1,27 @@
-<div>
+<div class="cartContainer">
     <h1 class="firstTitle">{{ mainTitle }}</h1>
     {{#each cart.products}}
     {{#with this}}
-        <div id="realTimeCartProds">
-            <h3>Product: {{ product.title }}</h3>
-            <p>Quantity: {{ quantity }}</p>
+        <div class="realTimeCartProds" id="realTimeCartProds">
+            <div class="cartProdImgContainer">
+                <img class="cartProdImg" src={{product.thumbnail }} alt="{{product.title}}">
+            </div>
+            <div class="cartProdDataCard">
+                <p>Product:</p>
+                <h2>{{ product.title }}</h2>
+            </div>
+            <div class="cartProdDataCard">
+                <p>Quantity:</p>
+                <h2>{{ quantity }}</h2>
+            </div>
+            <div class="cartProdDataCard">
+                <p>Description:</p>
+                <h2>{{ product.description}}</h2>
+            </div>
+            <div class="cartProdDataCard">
+                <p>Unit price:</p>
+                <h2>U$S {{product.price}}</h2>
+            </div>
         </div>
     {{/with}}
     {{/each}}

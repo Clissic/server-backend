@@ -3,6 +3,7 @@ import { ProductsModel } from "../DAO/models/products.model.js";
 import { MsgModel } from "../DAO/models/msgs.model.js";
 import { CartsModel } from "../DAO/models/carts.model.js";
 import { CartsService } from "../services/carts.service.js";
+import { UserModel } from "../DAO/models/users.model.js";
 
 export function connectSocketServer(httpServer) {
   const socketServer = new Server(httpServer);

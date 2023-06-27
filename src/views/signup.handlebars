@@ -1,0 +1,19 @@
+<body class="loginBody">
+    <form class="log-container" action="/api/sessions/signup" method="post">
+        <h1 class="firstTitle">iCommerce</h1>
+        <label class="labelClass" for="first_name">First name:</label>
+        <input class="inputClass" type="text" name="first_name" id="first_name" placeholder="" required>
+        <label class="labelClass" for="last_name">Last name:</label>
+        <input class="inputClass" type="text" name="last_name" id="last_name" placeholder="" required>
+        <label class="labelClass" for="email">Email:</label>
+        <input class="inputClass" type="text" name="email" id="email" placeholder="" required>
+        <label class="labelClass" for="age">Age:</label>
+        <input class="inputClass" type="number" name="age" id="age" placeholder="" required>
+        <label class="labelClass" for="password">Password:</label>
+        <input class="inputClass" type="password" name="password" id="password" placeholder="" required>
+        <button class="submitBtn" type="submit" id="addUserSubmitBtn">SIGN UP</button>
+        <div class="registerContainer">
+            <p>Already have an account?</p><a class="registerBtn" href="/">LOG IN</a>
+        </div>
+    </form>
+</body>

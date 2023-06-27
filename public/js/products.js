@@ -16,3 +16,7 @@ for (let i = 0; i < getAddBtns.length; i++) {
 socket.on("productAddedToCart", async (cart) => {
   return cart
 });
+
+/* Handlebars.registerHelper('multiply', function(a, b) {
+  return a * b;
+}); */
