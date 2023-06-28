@@ -32,9 +32,10 @@ app.use(session({
   store: MongoStore.create({
     mongoUrl: `mongodb+srv://joaquinperezcoria:${process.env.MONGODB_PASSWORD}@cluster0.zye6fyd.mongodb.net/?retryWrites=true&w=majority`,
     mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true},
-    ttl: 15
+    ttl: 15000
   })
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -88,24 +89,15 @@ app.get("/login", (req, res) => {
   res.send("Login success!")
 })
 
-app.get("/logout", (req, res) => {
-  req.session.destroy(err => {
-    if (err) {
-      return res.json({ status: "error", msg: "Logout error", body: err})
-    }
-    res.send("Logout ok!")
-  })
-})
-
 app.get("/open", (req, res) =>{
   res.send("Public information")
 })
 
 function checkLogin (req, res, next) {
-  if (req.session.user) {
+  if (req.session.email) {
     return next()
   } else {
-    return res.status(401).send("Authorization error!")
+    return res.redirect("/")
   }
 }
 
@@ -116,5 +108,5 @@ app.get("/profile", checkLogin, (req, res) =>{
 app.get("*", (req, res) => {
   return res
     .status(404)
-    .render("404")
+    .render("errorPage", {msg: "Error 404, page not found."})
 });

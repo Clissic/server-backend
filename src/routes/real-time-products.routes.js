@@ -10,6 +10,6 @@ realTimeProducts.get("/", async (req, res) => {
     return res.status(200).render("real-time-products", { mainTitle, products });
   } catch (error) {
     console.error("Failed to fetch products:", error);
-    return res.status(500).json({ status: "error", message: "Failed to fetch products", payload: {} });
+    return res.status(500).render("errorPage", { msg: "Error 500. Failed to fetch products."});
   }
 });

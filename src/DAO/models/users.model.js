@@ -7,6 +7,7 @@ const schema = new Schema({
   age: { type: Number, required: true},
   password: { type: String, required: true, max: 100 },
   role: { type: String},
+  cartId: { type: Object },
 });
 
 export const UserModel = model("users", schema);

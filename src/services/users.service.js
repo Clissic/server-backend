@@ -1,4 +1,5 @@
 import { UserModel } from "../DAO/models/users.model.js";
+import { CartsService } from "./carts.service.js";
 
 class userService {
   async getAll() {
@@ -19,24 +20,32 @@ class userService {
     return product
   }
 
-  async create({ firstName, lastName, email }) {
+  async create({ first_name, last_name, email, age, password, role }) {
     const userCreated = await UserModel.create({
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       email,
+      age,
+      password,
+      role,
+      cartId: CartsService.create(),
     });
     return userCreated;
   }
 
-  async updateOne({ _id, firstName, lastName, email }) {
+  async updateOne({ _id, first_name, last_name, email, age, password, role, cartId }) {
     const userUpdated = await UserModel.updateOne(
       {
         _id: _id,
+        cartId: cartId,
       },
       {
-        firstName,
-        lastName,
+        first_name,
+        last_name,
         email,
+        age,
+        password,
+        role,
       }
     );
     return userUpdated;

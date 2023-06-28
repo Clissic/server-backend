@@ -53,13 +53,13 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
     if (!productToAdd) {
       return res
         .status(404)
-        .json({ status: "error", message: "Product does not exist", payload: {} });
+        .render("errorPage", { msg: "Sorry, product not found."});
     }
     const cart = await CartsService.findById(cid);
     if (!cart) {
       return res
         .status(404)
-        .json({ status: "error", message: "Cart does not exist", payload: {} });
+        .render("errorPage", { msg: "Sorry, cart does not exist."});
     }
     const existingProduct = cart.products.find(
       (product) => product.product.toString() === pid
@@ -72,19 +72,11 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
     }
     return res
       .status(201)
-      .json({
-        status: "success",
-        message: "Product added to cart",
-        payload: productToAdd,
-      });
+      .redirect("/cart/" + cid);
   } catch (error) {
     return res
       .status(500)
-      .json({
-        status: "error",
-        message: "Failed to add product to cart",
-        payload: {},
-      });
+      .render("errorPage", { msg: "Error 500. Failed to add product to cart."});
   }
 });
 

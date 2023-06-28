@@ -1,10 +1,10 @@
 <body class="loginBody">
-    <form class="log-container" action="#" method="post">
+    <form class="log-container" action="/api/sessions/login" method="post">
         <h1 class="firstTitle">iCommerce</h1>
         <label class="labelClass" for="email">Email:</label>
-        <input class="inputClass" type="text" id="email" placeholder="" required>
+        <input class="inputClass" name="email" type="text" id="email" placeholder="" required>
         <label class="labelClass" for="password">Password:</label>
-        <input class="inputClass" type="password" id="password" placeholder="" required>
+        <input class="inputClass" name="password" type="password" id="password" placeholder="" required>
         <button class="submitBtn">LOG IN</button>
         <div class="registerContainer">
             <p>Do not have an account?</p><a class="registerBtn" href="/signup">SIGN UP</a>

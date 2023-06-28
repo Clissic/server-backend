@@ -4,10 +4,46 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* USER DATA BAR */
+
+.userData {
+  display: flex;
+  flex-direction: row;
+  column-gap: 3vw;
+  align-items: center;
+  height: 8vh;
+  justify-content: end;
+  padding: 0 5vw 0 5vw;
+}
+
+.userCartBtn {
+  display: flex;
+  flex-direction: row;
+  column-gap: 5px;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  background-color: #f9f9f9;
+  width: auto;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+  transition: 1s;
+}
+
+.cartSvg {
+  filter: opacity(100px);
+}
+
+.userCartBtn:hover {
+  background-color: #cccccc8f;
+}
+
+/* INDEX */
+
 .firstTitle {
   color: rgb(50, 50, 50);
   text-align: center;
-  margin: 7vh 0 5vh 0;
+  margin: 3vh 0 5vh 0;
   font-size: 8vh;
 }
 
@@ -322,28 +358,16 @@ input[type="submit"]:hover {
   margin-bottom: 3vh;
 }
 
-/* 404 RENDER */
+/* ERROR PAGE RENDER */
 
 .notFoundBckgrnd {
-  margin-top: -7vh;
+  margin-top: -3vh;
   width: 100vw;
   height: 100vh;
   z-index: -1;
   position: absolute;
   filter: blur(10px);
   filter: opacity(10%);
-}
-
-@keyframes fire {
-  0% {
-    filter: drop-shadow(0px 0px 10px rgba(255, 0, 0, 0.7));
-  }
-  50% {
-    filter: drop-shadow(0px 0px 20px rgb(218, 134, 0));
-  }
-  100% {
-    filter: drop-shadow(0px 0px 10px rgb(238, 255, 0));
-  }
 }
 
 .notFoundContainer {
@@ -358,10 +382,9 @@ input[type="submit"]:hover {
 
 .loginBody {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100vh   ;
 }
 
 .log-container {
@@ -372,15 +395,15 @@ input[type="submit"]:hover {
   align-items: center;
   justify-content: center;
   height: auto;
-  padding: 0 5vw 5vh 5vw;
+  padding: 0 5vw 5% 5vw;
 }
 
 .labelClass {
-  margin-top: 30px;
+  margin-top: 3%;
 }
 
 .submitBtn {
-  margin-top: 30px;
+  margin-top: 3%;
   background-color: #4b4b4b;
   color: white;
   font-weight: 600;
@@ -412,7 +435,7 @@ input[type="submit"]:hover {
 }
 
 .registerContainer {
-  margin-top: 30px;
+  margin-top: 3%;
   display: flex;
   flex-direction: row;
 }

@@ -3,7 +3,6 @@ import { ProductsModel } from "../DAO/models/products.model.js";
 import { MsgModel } from "../DAO/models/msgs.model.js";
 import { CartsModel } from "../DAO/models/carts.model.js";
 import { CartsService } from "../services/carts.service.js";
-import { UserModel } from "../DAO/models/users.model.js";
 
 export function connectSocketServer(httpServer) {
   const socketServer = new Server(httpServer);
@@ -60,7 +59,7 @@ export function connectSocketServer(httpServer) {
   socketServer.on("connection", (socket) => {
     socket.on("productIdToBeAdded", async (id) => {
       try {
-        const findCart = await CartsModel.findById("648158c52b60b7e166aa32ee");
+        const findCart = await CartsModel.findById("649b9ae2f6e9f77b88bbcd5c");
         const cid = findCart._id;
         const pid = id;
         const productToAdd = await ProductsModel.findById(pid);

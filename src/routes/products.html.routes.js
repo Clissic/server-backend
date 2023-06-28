@@ -5,6 +5,7 @@ export const products = express.Router();
 
 products.get("/", async (req, res) => {
   try {
+    const user = req.session;
     const {currentPage, prodLimit, sort, query} = req.query
     const sortOption = sort === "asc" ? {price: 1} : sort === "desc" ? {price: -1} : {}
     const filter = {};
@@ -31,11 +32,11 @@ products.get("/", async (req, res) => {
     const nextLink = hasNextPage ? `/api/products?currentPage=${queryResult.nextPage}&prodLimit=${prodLimit ? prodLimit : ""}&sort=${sort ? sort : ""}&query=${query ? query : ""}` : null
 
     const mainTitle = "ALL PRODUCTS";
-    return res.status(200).render("products", { query, sort, prodLimit, mainTitle, paginatedProd, totalDocs, limit, totalPages, page, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage, prevLink, nextLink});
+    return res.status(200).render("products", { user, query, sort, prodLimit, mainTitle, paginatedProd, totalDocs, limit, totalPages, page, pagingCounter, hasPrevPage, hasNextPage, prevPage, nextPage, prevLink, nextLink});
   } catch (error) {
     console.error("Failed to fetch products:", error);
     return res
       .status(500)
-      .json({ status: "error", message: "Failed to fetch products", payload: {} });
+      .render("errorPage", { msg: "Error 500. Failed to fetch products." });
   }
 });
