@@ -5,7 +5,18 @@ export const products = express.Router();
 
 products.get("/", async (req, res) => {
   try {
-    const user = req.session;
+    let user = req.session.user;
+    if (!user) {
+      user = {
+        email: req.user ? req.user.email : req.session.email,
+        first_name: req.user ? req.user.first_name : req.session.first_name,
+        last_name: req.user ? req.user.last_name : req.session.last_name,
+        age: req.user ? req.user.age : req.session.age,
+        role: req.user ? req.user.role : req.session.role,
+        cartId: req.user ? req.user.cartId : req.session.cartId,
+      };
+    }
+    console.log(user)
     const {currentPage, prodLimit, sort, query} = req.query
     const sortOption = sort === "asc" ? {price: 1} : sort === "desc" ? {price: -1} : {}
     const filter = {};

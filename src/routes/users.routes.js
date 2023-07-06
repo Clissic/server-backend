@@ -43,8 +43,8 @@ usersRouter.get("/:id", async (req, res) => {
 
 usersRouter.post("/", async (req, res) => {
   try {
-    const { firstName, lastName, email } = req.body;
-    if (!firstName || !lastName || !email) {
+    const { first_name, last_name, email } = req.body;
+    if (!first_name || !last_name || !email) {
       console.log(
         "Validation error: please complete firstName, lastName and email."
       );
@@ -54,7 +54,7 @@ usersRouter.post("/", async (req, res) => {
         payload: {},
       });
     }
-    const userCreated = await UserService.create({ firstName, lastName, email });
+    const userCreated = await UserService.create({ first_name, last_name, email });
     return res.status(201).json({
       status: "success",
       msg: "User created",
@@ -73,8 +73,8 @@ usersRouter.post("/", async (req, res) => {
 usersRouter.put("/:_id", async (req, res) => {
   try {
     const { _id } = req.params;
-    const { firstName, lastName, email } = req.body;
-    if (!firstName || !lastName || !email || !_id) {
+    const { first_name, last_name, email } = req.body;
+    if (!first_name || !last_name || !email || !_id) {
       console.log(
         "Validation error: please complete firstName, lastName and email."
       );
@@ -87,21 +87,21 @@ usersRouter.put("/:_id", async (req, res) => {
     try {
       const userUpdated = await UserService.updateOne({
         _id,
-        firstName,
-        lastName,
+        first_name,
+        last_name,
         email,
       });
       console.log(userUpdated);
       if (userUpdated.matchedCount > 0) {
         return res.status(201).json({
           status: "success",
-          msg: "user updated",
+          msg: "User updated",
           payload: {},
         });
       } else {
         return res.status(404).json({
           status: "error",
-          msg: "user not found",
+          msg: "User not found",
           payload: {},
         });
       }

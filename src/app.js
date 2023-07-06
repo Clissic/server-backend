@@ -77,32 +77,32 @@ app.use("/cart", cartRouter);
 app.get("/error-auth", (req, res) => {
   return res
     .status(400)
-    .render("errorPage", {msg: "Github authorization error."})
+    .render("errorPage", {msg: "Authorization error."})
 });
 
 // ORDENAR LOGICA DEL SESSION:
 
 app.get("/session", (req, res) => {
-  console.log(req.session)
-  if (req.session.cont) {
-    req.session.cont++
-    res.send("Nos visitaste " + req.session.cont)
-  } else {
-    req.session.cont = 1
-    res.send("Nos visitaste " + 1)
-  }
+  return res.send(JSON.stringify(req.session));
 })
 
 function checkLogin (req, res, next) {
-  if (req.session.email) {
+  if (req.session?.user?.email) {
     return next()
   } else {
     return res.redirect("/")
   }
 }
 
+function checkAdmin (req, res, next) {
+  if (req.session?.user?.role === "admin") {
+    return next()
+  }
+  return res.status(403).render("errorPage", { msg: "Authorization error."})
+}
+
 app.get("/profile", checkLogin, (req, res) =>{
-  res.send("Complete profile")
+  res.send(req.session.user)
 })
 
 app.get("*", (req, res) => {
