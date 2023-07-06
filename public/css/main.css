@@ -416,7 +416,7 @@ input[type="submit"]:hover {
 
 .submitBtn:hover {
   background-color: #808080;
-  transition: .5s;
+  transition: all .5s;
 }
 
 .registerBtn {
@@ -438,4 +438,27 @@ input[type="submit"]:hover {
   margin-top: 3%;
   display: flex;
   flex-direction: row;
+}
+
+.loginGithubContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 2vw;
+  background-color: black;
+  color: white;
+  width: 100%;
+  border-radius: 4px;
+  margin: 3vh 0 3vh 0;
+  padding: 2vh 0 2vh 0;
+}
+
+.loginGithubContainer:hover {
+  background-color: #4b4b4b;
+  transition: all .5s;
+}
+
+.githubIcon {
+  width: 5%;
+  filter: invert(100);
 }

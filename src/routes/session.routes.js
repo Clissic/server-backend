@@ -1,6 +1,9 @@
 import express from "express";
+import passport from "passport";
 import { UserModel } from "../DAO/models/users.model.js";
 import { CartsService } from "../services/carts.service.js";
+import { UserService } from "../services/users.service.js";
+import { createHash, } from "../utils/Bcrypt.js";
 
 export const sessionsRouter = express.Router();
 
@@ -15,7 +18,7 @@ sessionsRouter.post("/signup", async (req, res) => {
       last_name,
       email,
       age,
-      password,
+      password: createHash(password),
       role: "user",
       cartId: await CartsService.create(),
     });
@@ -38,19 +41,20 @@ sessionsRouter.post("/login", async (req, res) => {
         __v: 0,
       };
     } else {
-      user = await UserModel.findOne({ email, password });
-      if (!user) {
+      user = await UserService.findUser( email, password );
+      if (user) {
+        req.session.email = user.email;
+        req.session.first_name = user.first_name;
+        req.session.last_name = user.last_name;
+        req.session.role = user.role;
+        req.session.cartId = user.cartId;
+      } else {
         return res.render("errorPage", {
           msg: "User email or password are incorrect.",
         });
       }
-      req.session.email = user.email;
-      req.session.first = user.first_name;
-      req.session.last = user.last_name;
-      req.session.role = user.role;
-      req.session.cartId = user.cartId;
     }
-
+    console.log(user)
     return res.redirect("/products");
   } catch (error) {
     console.error(error);
@@ -60,7 +64,6 @@ sessionsRouter.post("/login", async (req, res) => {
   }
 });
 
-
 sessionsRouter.get("/logout", (req, res) => {
   req.session.destroy(err => {
     if (err) {
@@ -69,3 +72,21 @@ sessionsRouter.get("/logout", (req, res) => {
     res.redirect("/")
   })
 })
+
+sessionsRouter.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+  );
+
+sessionsRouter.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/error-auth" }),
+  (req, res) => {
+    req.session.email = req.user.email;
+    req.session.first_name = req.user.first_name;
+    req.session.last_name = req.user.last_name;
+    req.session.role = req.user.role;
+    req.session.cartId = req.user.cartId;
+    res.redirect("/products")
+  }
+);

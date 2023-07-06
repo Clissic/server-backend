@@ -1,6 +1,6 @@
-{{#if user.first}}
+{{#if user.first_name}}
   <div class="userData">
-    <p><strong>Welcome: </strong>{{user.first}} {{user.last}}</p>
+    <p><strong>Welcome: </strong>{{user.first_name}}</p>
     <p style="color:red; text-transform: uppercase"><strong style="color:black; text-transform: capitalize">Role: </strong>{{user.role}}</p>
     <a class="userCartBtn" href="/cart/{{user.cartId._id}}"><p>My cart</p><svg class="cartSvg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 19.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm1.336-5l1.977-7h-16.813l2.938 7h11.898zm4.969-10l-3.432 12h-12.597l.839 2h13.239l3.474-12h1.929l.743-2h-4.195z"/></svg></a>
     <a class="userCartBtn" href="/api/sessions/logout"><strong>LOGOUT</strong></a>
@@ -15,7 +15,7 @@
       <p class="prodTitle">{{title}}</p>
       <p class="prodPrice">U$S {{price}}</p>
       <p class="prodDesc">{{description}}</p>
-      {{#if ../user.first}}
+      {{#if ../user.first_name}}
       <button type="submit" data-id="{{_id}}" class="addToCartBtn"><img class="cartIcon" src="https://cdn-icons-png.flaticon.com/512/107/107831.png?w=740&t=st=1687246527~exp=1687247127~hmac=39ecdf8657ebd6d3fa7d3789ffef1589122ea081b007f50ed1b37f38bba49d8a" alt="carrito"> AGREGAR</button>
       {{/if}}
     </form>

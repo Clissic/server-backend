@@ -1,4 +1,5 @@
 import { UserModel } from "../DAO/models/users.model.js";
+import { isValidPassword } from "../utils/Bcrypt.js";
 import { CartsService } from "./carts.service.js";
 
 class userService {
@@ -16,8 +17,29 @@ class userService {
   }
 
   async findById(id) {
-    const product = await UserModel.findById(id);
-    return product
+    const userFound = await UserModel.findById(id);
+    return userFound
+  }
+
+  async findUser(email, password) {
+    const user = await UserModel.findOne(
+      {email: email},
+      {
+        _id: true,
+        first_name: true,
+        last_name: true,
+        email: true,
+        age: true,
+        password: true,
+        role: true,
+        cartId: true,
+      }
+    );
+    if (user && isValidPassword(password, user.password)) {
+      return user;
+    } else {
+      return false
+    }
   }
 
   async create({ first_name, last_name, email, age, password, role }) {

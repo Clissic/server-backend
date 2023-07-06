@@ -57,7 +57,7 @@ usersRouter.post("/", async (req, res) => {
     const userCreated = await UserService.create({ firstName, lastName, email });
     return res.status(201).json({
       status: "success",
-      msg: "user created",
+      msg: "User created",
       payload: userCreated,
     });
   } catch (e) {
